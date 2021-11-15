@@ -1,0 +1,9 @@
+[Unit]
+Description=Mqtt nvidia shield buttons service
+
+[Service]
+User=alexa
+ExecStart=/bin/bash -c "/home/alexa/activity/shield-buttons-mqtt.scm"
+
+[Install]
+WantedBy=default.target

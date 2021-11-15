@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="grid-dirpad">
+      <div><button class="button" id="back">back</button></div>
+      <div><button class="button" id="dpad_up">up</button></div>
+      <div><button class="button" id="home">home</button></div>
+      <div><button class="button" id="dpad_left">left</button></div>
+      <div><button class="button" id="dpad_center">center</button></div>
+      <div><button class="button" id="dpad_right">right</button></div>
+      <div><button class="button" id="volume_down">vol-</button></div>
+      <div><button class="button" id="dpad_down">down</button></div>
+      <div><button class="button" id="volume_up">vol+</button></div>  
+    </div>
+  </body>
+  <script>
+    var url_base = "http://burpelson:8080/rest/items/nvkey_";
+    var id_array = [
+        "back",
+        "dpad_up",
+        "home",
+        "dpad_left",
+        "dpad_center",
+        "dpad_right",
+        "volume_down",
+        "dpad_down",
+        "volume_up"];
+    function nvKeyPress(item) {
+        var url = url_base + item;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+
+        xhr.setRequestHeader("Content-Type", "text/plain");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.status);
+                console.loAg(xhr.responseText);
+            }};
+
+        var data = 'ON';
+
+        xhr.send(data);
+    }
+    id_array.forEach(function (item, index) {
+        const button = document.getElementById(item);
+        button.addEventListener('click', async _ => {
+            nvKeyPress(item);
+        });    
+    });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowUp') {
+            nvKeyPress('dpad_up');
+        }
+        if (event.key === 'ArrowDown') {
+            nvKeyPress('dpad_down');
+        }
+        if (event.key === 'ArrowLeft') {
+            nvKeyPress('dpad_left');
+        }
+        if (event.key === 'ArrowRight') {
+            nvKeyPress('dpad_right');
+        }
+        if ([" "
+             // , "Enter"
+            ]
+            .includes(event.key)) {
+            nvKeyPress('dpad_center');
+        }
+        if (["H", "h", "Home"].includes(event.key)) {
+            nvKeyPress('home');
+        }
+        if (["b", "B", "Escape"].includes(event.key)) {
+            nvKeyPress('back');
+        }
+        if (["+"].includes(event.key)) {
+            nvKeyPress('volume_up');
+        }
+        if (["-"].includes(event.key)) {
+            nvKeyPress('volume_down');
+        }
+    });    
+  </script>
+</html>
